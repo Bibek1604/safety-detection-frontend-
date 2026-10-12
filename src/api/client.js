@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const client = axios.create({ baseURL: import.meta.env.VITE_API_URL || '/api', timeout: 60000 });
+// Single source of the API base URL. VITE_API_URL may be a full backend URL
+// (with or without a trailing /api); blank means same origin / the Vite dev proxy.
+export const API_BASE_URL = (() => {
+  const url = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+  if (!url) return '/api';
+  return url.endsWith('/api') ? url : `${url}/api`;
+})();
+
+const client = axios.create({ baseURL: API_BASE_URL, timeout: 60000 });
 
 client.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
@@ -19,7 +27,7 @@ client.interceptors.response.use(
       const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/signup');
       if (!isAuthEndpoint) {
         localStorage.removeItem('user');
-    localStorage.removeItem('token');
+        localStorage.removeItem('token');
         window.location.href = '/login';
       }
     }

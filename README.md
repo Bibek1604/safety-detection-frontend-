@@ -9,7 +9,7 @@ Use the included render.yaml with New > Blueprint, or configure:
 - Publish directory: dist
 - Node: 22
 - Rewrite: /* to /index.html (required for React route refreshes)
-- Environment: VITE_API_URL=https://YOUR-ACTUAL-BACKEND.onrender.com/api
+- Environment: VITE_API_URL=https://YOUR-ACTUAL-BACKEND.onrender.com/api (the client appends /api if you omit it)
 
 Use your backend's actual Render URL. VITE_API_URL is substituted at build time; rebuild whenever it changes. Set the backend CORS_ORIGIN to this site's actual origin, without a trailing slash.
 
